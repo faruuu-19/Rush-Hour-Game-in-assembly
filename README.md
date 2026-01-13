@@ -1,4 +1,185 @@
+# Taxi Game – Assembly Language Project
 
+## Table of Contents
+1. Project Overview  
+2. Technical Architecture  
+3. Game Features and Mechanics  
+4. User Interface Design  
+5. Implementation Details  
+6. Game Manual  
+7. Conclusion  
+
+---
+
+## 1. Project Overview
+
+### 1.1 Introduction
+This project is a **Taxi Simulation Game** developed in **x86 Assembly Language** using the **Irvine32 library**. The player controls a taxi on a grid-based map, picks up passengers, avoids obstacles, and delivers them to destinations while maximizing score.
+
+**Key Focus**
+- Strategic navigation  
+- Score maximization  
+- Real-time collision handling  
+- Multiple game modes and difficulty levels  
+
+### 1.2 Project Objectives
+- Demonstrate proficiency in x86 assembly programming  
+- Implement complex game logic with AI-controlled vehicles  
+- Design an engaging user experience using ASCII graphics  
+- Implement save and load functionality  
+- Integrate sound effects and background music  
+
+### 1.3 Development Environment
+- **Language:** x86 Assembly (MASM)  
+- **Library:** Irvine32.inc  
+- **Audio:** winmm.lib  
+- **Platform:** Windows  
+- **Grid Size:** 20 × 20 cells  
+- **Graphics:** ASCII art with colors  
+
+---
+
+## 2. Technical Architecture
+
+### 2.1 Memory Organization
+
+**Main Data Storage**
+- Grid array: 400 bytes (20 × 20)  
+- Player data: position, color, score, timers  
+- Passenger data: up to 5 passengers  
+- NPC cars: up to 5 AI vehicles  
+- Game state: mode, difficulty, level, lives, timers  
+
+### 2.2 Core Data Structures
+
+**Grid Symbols**
+- `.` Empty space  
+- `C` Player taxi  
+- `P` Passenger  
+- `D` Destination  
+- `H` House obstacle  
+- `T` Tree obstacle  
+- `X` Hurdle obstacle  
+- `R` Rock obstacle  
+- `O` NPC car  
+- `$` Coin  
+
+### 2.3 Key Algorithms
+
+**Pathfinding (BFS)**
+- Ensures passengers can reach destinations  
+- Guarantees generated levels are solvable  
+- Validates all placements  
+
+**Collision Detection**
+- Real-time detection for all movements  
+- Damage varies by taxi color  
+- Handles static and moving obstacles  
+
+**AI Movement**
+- NPC cars move in straight paths  
+- Reverse direction when blocked  
+- Automatic obstacle avoidance  
+
+**Level Generation**
+- Random house blocks (3–6 cells)  
+- Passengers placed at least 5 cells apart  
+- BFS verification for reachability  
+
+---
+
+## 3. Game Features and Mechanics
+
+### 3.1 Game Modes
+
+**Standard Mode**
+- Classic gameplay  
+- High-score focused  
+- Player-selected difficulty  
+
+**Career Mode**
+- 10 progressive levels  
+- Level 1 target: 50 points  
+- Each level increases target by 50 points  
+- Increasing difficulty per level  
+
+**Time Attack Mode**
+- Time-limited gameplay  
+- Options: 30s / 60s / 120s  
+- Score as much as possible  
+
+**Endless Mode**
+- Start with 3 lives  
+- Each collision removes 1 life  
+- Game ends at 0 lives  
+
+### 3.2 Taxi Color System
+
+**Red Taxi**
+- Slower speed (500 ms per move)  
+- Takes 50% less damage  
+- Best for defensive play  
+
+**Yellow Taxi**
+- Faster speed (100 ms per move)  
+- Normal damage  
+- Best for aggressive play  
+
+### 3.3 Difficulty Levels
+
+**Easy**
+- Coins: 8–10  
+- Passengers: 2–5  
+- Few obstacles  
+- NPC speed: slow (1500 ms)  
+
+**Standard**
+- Coins: 5–7  
+- Passengers: 2–5  
+- Medium obstacles  
+- NPC speed: medium (1000 ms)  
+
+**Hard**
+- Coins: 3–5  
+- Passengers: 3–4  
+- Many obstacles  
+- NPC speed: fast (700 ms)  
+
+### 3.4 Scoring System
+
+**Earn Points**
+- Drop off passenger: +10  
+- Collect coin: +10  
+
+**Lose Points**
+- Hit passenger: -5  
+- Hit hurdle/tree: -4 (yellow) / -2 (red)  
+- Hit house: -3  
+- Hit NPC car: -2 (yellow) / -3 (red)  
+- Hit rock: -2  
+
+### 3.5 Dynamic Difficulty
+- Every 2 passenger drop-offs increase NPC speed  
+- Speed increases by 100 ms  
+- Minimum NPC speed: 300 ms  
+
+---
+
+## 4. User Interface Design
+
+### 4.1 Game Board Display
+- Grid-based display with 9 × 9 characters per cell  
+- Colored ASCII representations for all entities  
+
+### 4.2 HUD Elements
+- Score display  
+- Passenger status  
+- Mode-specific indicators (level, time, lives)  
+
+### 4.3 Pause Screen
+=== GAME PAUSED ===
+Press 'P' to resume
+Press 'C' to save and exit
 ### 4.4 Leaderboard
 - Displays top 10 scores  
 - Persistent across sessions  
